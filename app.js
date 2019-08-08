@@ -12,7 +12,7 @@ var firebaseConfig = {
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 
-  var database = firebase.database();
+  var trainData = firebase.database();
 
 $("#addTrainBtn").on("click",function(){
     var trainName = $("#trainNameInput").val().trim();
@@ -44,4 +44,10 @@ trainData.ref().on("child_added", function(snapshot){
     var remainder = moment().diff(moment.unix(firstTrain), "minutes")%frequency;
     var minutes = frequency-remainder;
     var arrival = moment().add(minutes,"m").format("HH:mm A");
+
+    $("#trainTable > tBody").append("<tr><td>"+name+"</td><td>"
+    +destination+"</td><td>"
+    +frequency+"</td><td>"
+    +arrival+"</td><td>"
+    +minutes+"</td></tr>");
 })
