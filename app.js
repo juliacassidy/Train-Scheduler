@@ -17,6 +17,6 @@ var trainData = firebase.database();
 $("#addTrainBtn").on("click",function(){
     var trainName = $("#trainNameInput").val().trim();
     var destination = $("#destinationInput").val().trim();
-    var firstTrain = $("#firstTrainInput").val().trim();
+    var firstTrain = moment($("#firstTrainInput").val().trim(),"HH: mm").subtract(10, "years").format("x");
     var frequency = $("#frequencyInput").val().trim();
 })
