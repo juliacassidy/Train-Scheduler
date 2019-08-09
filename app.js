@@ -50,7 +50,7 @@ $("#addTrainBtn").on("click", function (event) {
 // firebase event for adding trains and store as var
 
 trainData.ref().on("child_added", function (childSnapshot) {
-    var name = childSnapshot.val().name;
+    var trainName = childSnapshot.val().name;
     var destination = childSnapshot.val().destination;
     var frequency = childSnapshot.val().frequency;
     var firstTrain = childSnapshot.val().firstTrain;
