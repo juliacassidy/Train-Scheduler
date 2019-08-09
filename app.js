@@ -1,3 +1,8 @@
+//current time
+let currentTime = $("#currentTime");
+    currentTime.text(moment().format("dddd, MMMM Do YYYY, HH:mm:ss"));
+  
+
 // Your web app's Firebase configuration
 var firebaseConfig = {
     apiKey: "AIzaSyDSO7sevmaBx431uKhDtj7gPB-9rzKF8KM",
@@ -22,7 +27,7 @@ $("#addTrainBtn").on("click", function (event) {
 //grab input
     var trainName = $("#trainNameInput").val().trim();
     var destination = $("#destinationInput").val().trim();
-    var firstTrain = moment($("#firstTrainInput").val().trim(), "HH: mm").subtract(10, "years").format("x");
+    var firstTrain = moment($("#firstTrainInput").val().trim(), "HH: mm").subtract().format("x");
     var frequency = $("#frequencyInput").val().trim();
 
 
