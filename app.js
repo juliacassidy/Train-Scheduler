@@ -1,7 +1,7 @@
 //current time
 let currentTime = $("#currentTime");
-    currentTime.text(moment().format("dddd, MMMM Do YYYY, HH:mm:ss"));
-  
+currentTime.text(moment().format("dddd, MMMM Do YYYY, HH:mm:ss"));
+
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -24,28 +24,28 @@ $("#addTrainBtn").on("click", function (event) {
     event.preventDefault();
 
 
-//grab input
+    //grab input
     var trainName = $("#trainNameInput").val().trim();
     var destination = $("#destinationInput").val().trim();
-    var firstTrain = moment($("#firstTrainInput").val().trim(), "HH: mm").subtract().format("x");
+    var firstTrain = moment($("#firstTrainInput").val().trim(), "HH:mm").subtract(10, "years").format("X");
     var frequency = $("#frequencyInput").val().trim();
 
 
-// hold for data temporary
+    // hold for data temporary
     var newTrain = {
         name: trainName,
         destination: destination,
         firstTrain: firstTrain,
-        frequency: frequency
+        frequency: frequency,
     };
 
-// uplaod to database
+    // uplaod to database
     trainData.ref().push(newTrain);
 
-// alert for success
+    // alert for success
     alert("Train successfully added");
 
-//clear text-boxes
+    //clear text-boxes
     $("#trainNameInput").val("");
     $("#destinationInput").val("");
     $("#firstTrainInput").val("");
@@ -60,19 +60,28 @@ trainData.ref().on("child_added", function (childSnapshot) {
     var frequency = childSnapshot.val().frequency;
     var firstTrain = childSnapshot.val().firstTrain;
 
-// math for time until next train
-    var remainder = moment().diff(moment.unix(firstTrain), "minutes") % frequency;
-    var minutes = frequency - remainder;
-    var arrival = moment().add(minutes, "m").format("HH:mm A");
+    // math for time until next train
+    
+    // chang year so first train already came
+    var firstTrainNew = moment(childSnapshot.val().firstTrain, "hh:mm").subtract(1, "years");
+    // difference between current and firstTrain
+    var diffTime = moment().diff(moment(firstTrainNew), "minutes");
+    var remainder = diffTime % childSnapshot.val().frequency;
+    // minutes until next train
+    var minsAway = childSnapshot.val().frequency - remainder;
+    // time for next train
+    var nextTrain = moment().add(minsAway, "minutes");
+    nextTrain = moment(nextTrain).format("hh:mm");
 
-// Create the new row
+    // Create the new row
     var newRow = $("<tr>").append(
         $("<td>").text(trainName),
         $("<td>").text(destination),
-        $("<td>").text(firstTrain),
         $("<td>").text(frequency),
+        $("<td>").text(nextTrain),
+        $("<td>").text(minsAway),
     );
 
-// Append the new row to the table
+    // Append the new row to the table
     $("#trainTable > tbody").append(newRow);
 });
