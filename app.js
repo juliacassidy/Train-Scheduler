@@ -63,7 +63,7 @@ trainData.ref().on("child_added", function (childSnapshot) {
     // math for time until next train
     
     // chang year so first train already came
-    var firstTrainNew = moment(childSnapshot.val().firstTrain, "hh:mm").subtract(1, "years");
+    var firstTrainNew = moment(childSnapshot.val().firstTrain, "HH:mm").subtract(1, "years");
     // difference between current and firstTrain
     var diffTime = moment().diff(moment(firstTrainNew), "minutes");
     var remainder = diffTime % childSnapshot.val().frequency;
@@ -71,7 +71,7 @@ trainData.ref().on("child_added", function (childSnapshot) {
     var minsAway = childSnapshot.val().frequency - remainder;
     // time for next train
     var nextTrain = moment().add(minsAway, "minutes");
-    nextTrain = moment(nextTrain).format("hh:mm");
+    nextTrain = moment(nextTrain).format("HH:mm");
 
     // Create the new row
     var newRow = $("<tr>").append(
